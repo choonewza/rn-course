@@ -8,15 +8,17 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
   TouchableOpacity,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  Image
 } from 'react-native';
 
 export default class ListItem extends Component {
   render() {
-    const {placeName, onItemPressed} = this.props
+    const {placeName, onItemPressed, placeImage} = this.props
     return (
       <TouchableOpacity onPress={onItemPressed}>
         <View style={styles.container}>
+          <Image resizeMode={"cover"} source={placeImage} style={styles.placeImage}/>
           <Text>{placeName}</Text>
         </View>
       </TouchableOpacity>
@@ -29,6 +31,13 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     margin: 5,
-    backgroundColor: "#eee"
+    backgroundColor: "#eee",
+    flexDirection: 'row',
+    alignItems: "center"
+  },
+  placeImage: {
+    marginRight: 8,
+    height: 30,
+    width: 30
   }
 });

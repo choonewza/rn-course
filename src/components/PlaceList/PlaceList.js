@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {StyleSheet, FlatList} from 'react-native';
+import {StyleSheet, FlatList, View} from 'react-native';
 import ListItem from '../ListItem/ListItem'
 
 export default class PlaceList extends Component {
@@ -10,11 +10,10 @@ export default class PlaceList extends Component {
             <FlatList
                 style={styles.container}
                 data={places}
-                renderItem={(info) => (
-                <ListItem
-                    placeName={info.item.value}
-                    onItemPressed={() => this.props.onItemDeleted(info.item.key)}/>
-            )}/>
+                renderItem={({item}) => (<ListItem
+                placeName={item.name}
+                placeImage={item.image}
+                onItemPressed={() => this.props.onItemDeleted(item.key)}/>)}/>
         )
     }
 }
