@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import {connect} from 'react-redux'
 
 import ListItem from './src/components/ListItem/ListItem'
 import PlaceInput from './src/components/PlaceInput/PlaceInput'
@@ -7,12 +8,14 @@ import PlaceList from './src/components/PlaceList/PlaceList'
 import placeImage from './src/assets/image.jpg'
 import PlaceDetail from './src/components/PlaceDetail/PlaceDetail'
 
-export default class App extends React.Component {
+import {addPlace, deletePlace, selectPlace, deselectPlace} from './src/store/actions'
 
-  state = {
-    places: [],
-    selectedPlace: null
-  }
+class App extends React.Component {
+
+  // state = {
+  //   places: [],
+  //   selectedPlace: null
+  // }
 
   makeid() {
     let text = "";
@@ -25,23 +28,7 @@ export default class App extends React.Component {
   }
 
   placeAddedHandler = placeName => {
-    this.setState(prevState => {
-      return {
-        places: [
-          ...prevState.places, {
-            key: this.makeid(),
-            name: placeName,
-            image: {
-              uri: "https://media.vogue.in/wp-content/uploads/2018/01/5-global-trends-that-will-chan" +
-                  "ge-beauty-in-2018-simpler-habits-and-J-beauty-vogue-india-866x487.jpg"
-            }
-          }
-        ]
-      }
-    })
-
-    // this.setState(prevState => {   return {     places:
-    // prevState.places.concat({key: Math.random(), value: placeName})   } })
+    this.props.onAddPlace(placeName)
   }
 
   onItemDeletedHandler = key => {
@@ -57,45 +44,29 @@ export default class App extends React.Component {
   }
 
   placeDeletedHandler = () => {
-    this.setState(prevState => {
-      return {
-        places: prevState
-          .places
-          .filter(place => {
-            return place.key !== prevState.selectedPlace.key
-          }),
-        selectedPlace: null
-      }
-    })
+    this.props.onDeletePlace()
     
   }
 
   modalClosedHandler = () => {
-    this.setState({selectedPlace: null})
+    this.props.onDeselectPlace()
   }
 
   placeSelectedHandler = key => {
-    this.setState(prevState => {
-      return {
-        selectedPlace: prevState
-          .places
-          .find(place => {
-            return place.key === key
-          })
-      }
-    })
+    this.props.onSelectPlace(key)
   }
 
   render() {
+    const {places, selectedPlace} = this.props
     return (
       <View style={styles.container}>
         <PlaceDetail
-          selectedPlace={this.state.selectedPlace}
+          selectedPlace={selectedPlace}
           onItemDeleted={this.placeDeletedHandler}
           onModelClosed={this.modalClosedHandler}/>
         <PlaceInput onPlaceAdded={this.placeAddedHandler}/>
         <PlaceList
-          places={this.state.places}
+          places={places}
           onItemDeleted={this.placeSelectedHandler}/>
       </View>
     );
@@ -112,3 +83,23 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });
+
+const mapStateToProps = state => {
+  return{
+    places: state.places.places,
+    selectedPlace: state.places.selectedPlace
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return{
+    onAddPlace: (name) => dispatch(addPlace(name)),
+    onDeletePlace: () => dispatch(deletePlace()),
+    onSelectPlace: (key) => dispatch(selectPlace(key)),
+    onDeselectPlace: () => dispatch(deselectPlace())
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App)
+
+// export default connect()(App)

@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
 
 export default class PlaceInput extends Component {
     state = {
-        placeName: 'Please input your a place name.'
+        placeName: ''
     }
 
     placeNameChangedHandler = placeName => {
@@ -25,7 +25,8 @@ export default class PlaceInput extends Component {
                 <TextInput
                     style={styles.placeInput}
                     onChangeText={this.placeNameChangedHandler}
-                    value={this.state.placeName}/>
+                    value={this.state.placeName}
+                    placeholder="Please input your a place name."/>
                 <Button
                     style={styles.placeButton}
                     onPress={this.placeSubmitHandler}

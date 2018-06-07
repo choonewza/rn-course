@@ -26,7 +26,7 @@ export default class PlaceDetail extends Component {
                 <View style={styles.container}>
                     {modalContent}
                     <View style={styles.btnContainer}>
-                        <Button title="Delete1" color="red" onPress={onItemDeleted}/>
+                        <Button title="Delete" color="red" onPress={onItemDeleted}/>
                         <Button title="Close" onPress={onModelClosed}/>
                     </View>
                 </View>
